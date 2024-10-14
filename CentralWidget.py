@@ -14,7 +14,7 @@ class CentralWidget(QWidget):
 
         self.__line_edit_blind_euro = QLineEdit("50.00")
 
-        self.__time_edit = QTimeEdit(QTime(0, 10))
+        self.__time_edit = QTimeEdit(QTime(0, 0, 5))
         self.__time_edit.setDisplayFormat("hh:mm:ss")
 
         self.__line_edit_raise_percent = QLineEdit("15.3")
@@ -37,8 +37,8 @@ class CentralWidget(QWidget):
 
         grid_layout.addWidget(QLabel("Blind in €"), 1, 1)
         grid_layout.addWidget(QLabel("Raise Time"), 2, 1)
-        grid_layout.addWidget(QLabel("Raise in %"), 3, 1)
-        grid_layout.addWidget(QLabel("Raise in €"), 4, 1)
+        grid_layout.addWidget(self.__radio_button_percent, 3, 1)
+        grid_layout.addWidget(self.__radio_button_euro, 4, 1)
 
         grid_layout.addWidget(self.__line_edit_blind_euro, 1, 2)
         grid_layout.addWidget(self.__time_edit, 2, 2)
@@ -47,8 +47,6 @@ class CentralWidget(QWidget):
 
         grid_layout.addWidget(self.__push_button, 1, 3)
         grid_layout.addWidget(self.__lcd_number, 2, 3)
-        grid_layout.addWidget(self.__radio_button_percent, 3, 3)
-        grid_layout.addWidget(self.__radio_button_euro, 4, 3)
 
         grid_layout.addWidget(self.__text_browser, 5, 1, 1, 4)
 
@@ -94,6 +92,11 @@ class CentralWidget(QWidget):
 
     @pyqtSlot()
     def decrease_sec(self):
+        if self.__time_left == QTime(0, 0, 0):
+            self.__time_left = self.__time_edit.time()
+
+            self.__text_browser.append("Blind raised.")
+
         self.__time_left = self.__time_left.addSecs(-1)
         print(self.__time_left)
 
